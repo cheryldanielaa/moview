@@ -1,0 +1,79 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title *ngIf="!isLoggedIn">MOVIEW</ion-title>
+
+    <!--jika sudah login, maka berubah jadi user dan tombol logout-->
+    <div *ngIf="isLoggedIn" [ngStyle]="{ 'display': 'flex', 'align-items': 'center', 'gap': '10px' }">
+      <!--Untuk munculin profile picture-->
+      <ion-avatar  [ngStyle]="{ 'width': '40px', 'height': '40px' }">
+        <img [src]="userProfile" [alt]="'No Image'">
+      </ion-avatar>
+      
+      <strong [ngStyle] = "{'font-size': '18px'}">Welcome to MOVIEW, {{nama}}!</strong>
+    </div>
+
+    <div *ngIf="!isLoggedIn" slot="end">
+      <!-- fill = 'clear' buat remove background color di button -->
+      <ion-button routerLink="/login" fill="clear">Login</ion-button>
+      <ion-button routerLink="/register" fill="clear">Register</ion-button>
+    </div>
+
+    <div *ngIf="isLoggedIn" slot="end">
+      <ion-button (click)="logout()" fill="clear">Logout</ion-button>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <ion-content *ngIf="userRole === 'Admin'" [fullscreen]="true" [ngStyle]="{'display': 'flex', 
+              'justify-content': 'center', 'align-items': 'center', 'height': '25%'}">
+  <p [ngStyle]="{'text-align': 'center'}" slot="fixed">How are you today? ^^</p>
+  </ion-content>
+
+    <p *ngIf="userRole==='User'"[ngStyle]="{'text-align': 'center'}">
+      Discover every movie ever made, explore reviews, and find the perfect pick for your next watch!
+    </p>
+    <p *ngIf="userRole==='User'" [ngStyle]="{'text-align': 'center'}">It's just one click away! ^^</p>
+
+    <!-- justify content center biar card slalu ada di bagian tengah layar -->
+    <!--movies yang di ts itu return 10 data terbaru-->
+    <ion-row *ngFor ="let movie of chunkArray(movies,4)" [ngStyle]="{'justify-content': 'center'}">
+    <!--isikan data kolom untuk setiap barisnya-->
+    <!--atur supaya ukuran semua kolom sama-->
+    <!-- YANG DITAMPILKAN HANYA: POSTER, JUDUL, GENRE, AVG RATING, TGL RILIS -->
+    <ion-col *ngFor = "let m of movie" size="12" size-sm="6" size-md="3" [ngStyle]="{'display': 'flex'}">
+      <ion-card [ngStyle]="{'display': 'flex', 'flex-direction': 'column', 'height': '100%'}">
+        <img [alt]="m.title" [src]="m.poster" [ngStyle]="{'height':'500px','width':'100%'}"/> 
+        <ion-card-header>
+          <ion-card-title 
+            [ngStyle]="{'font-size':'20px','font-weight':'bold', 'display': 'grid', 
+                        'grid-template-columns': '1fr auto', 'align-items': 'center'}">
+            <span>{{m.title}}</span>
+
+            <div style="display: flex; align-items: center;">
+              <ion-icon name="star" style="color: gold; margin-right: 5px;"></ion-icon>
+              <span *ngIf="m.rating>0">{{m.rating}}</span>
+              <!--klo dia ratingnya masih 0 berarti not rated-->
+              <span *ngIf="m.rating==0">NaN</span>
+            </div>
+          </ion-card-title>
+
+          <ion-card-subtitle [ngStyle]="{'font-size':'16px', 'font-weight':'bold', 'color': '#C19A6B'}">
+            <b>{{m.genre}}</b>
+          </ion-card-subtitle>
+          <br>
+
+          <ion-card-subtitle>Release Date : {{m.release_date}}</ion-card-subtitle>
+        </ion-card-header>
+
+        <ion-row style="justify-content: flex-end; padding: 5px 5px;">
+          <ion-button shape="round" routerLink="/detail-movie/{{m.id}}">
+            <ion-icon slot="icon-only" name="search"></ion-icon>
+          </ion-button>
+        </ion-row>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+  <br>
+</ion-content>

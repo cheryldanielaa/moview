@@ -1,0 +1,146 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="add-movie-title">Add Movie</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <form (ngSubmit)="addMovie()" #movieForm="ngForm">
+    <!-- Movie Title -->
+    <ion-item>
+      <ion-label position="stacked" class="title">Movie Title</ion-label>
+      <ion-input type="text" [(ngModel)]="movie.title" name="title"></ion-input>
+    </ion-item>
+    <p *ngIf="showError && !movie.title" class="error-text">
+      Title is required!
+    </p>
+
+    <!-- Genre -->
+    <ion-item>
+      <ion-label position="stacked" class="title">Genre</ion-label>
+      <ion-input type="text" [(ngModel)]="movie.genre" name="genre"></ion-input>
+    </ion-item>
+    <p *ngIf="showError && !movie.genre" class="error-text">
+      Genre is required!
+    </p>
+
+    <!-- Director -->
+    <ion-item>
+      <ion-label position="stacked" class="title">Movie Director</ion-label>
+      <ion-input
+        type="text"
+        [(ngModel)]="movie.director"
+        name="director"
+      ></ion-input>
+    </ion-item>
+    <p *ngIf="showError && !movie.director" class="error-text">
+      Director is required!
+    </p>
+
+    <!-- Release Date-->
+    <ion-item>
+      <ion-label position="stacked" class="title">Release Date</ion-label>
+      <ion-input [readonly]="true" [(ngModel)]="releaseDate" name="releaseDate"></ion-input>
+      <ion-button slot="end" (click)="showCalendar()">
+        <ion-icon name="calendar-outline"></ion-icon>
+      </ion-button>
+    </ion-item>
+
+    <!-- Date Picker -->
+    <ion-item *ngIf="statusCalendar">
+      <ion-datetime
+        presentation="date"
+        [(ngModel)]="releaseDate"
+        name="releaseDate"
+      >
+      </ion-datetime>
+    </ion-item>
+
+    <p *ngIf="showError && !releaseDate" class="error-text">
+      Release date is required!
+    </p>
+
+    <!-- Synopsis -->
+    <ion-item>
+      <ion-label position="stacked" class="title">Synopsis</ion-label>
+      <ion-textarea [(ngModel)]="movie.synopsis" name="synopsis"></ion-textarea>
+    </ion-item>
+    <p *ngIf="showError && !movie.synopsis" class="error-text">
+      Synopsis is required!
+    </p>
+
+    <!-- Poster -->
+    <ion-item>
+      <ion-label position="stacked" class="title">Poster URL</ion-label>
+      <ion-input
+        type="text"
+        [(ngModel)]="movie.poster"
+        name="poster"
+      ></ion-input>
+    </ion-item>
+    <p *ngIf="showError && !movie.poster" class="error-text">
+      Poster URL is required!
+    </p>
+
+    <div *ngIf="movie.poster">
+      <ion-label class="preview-title">Poster Preview</ion-label>
+      <img [src]="movie.poster" alt="Poster" class="poster-preview" />
+    </div>
+    <br />
+
+    <!-- Cast -->
+    <ion-label
+      position="stacked"
+      class="title"
+      [ngStyle]="{'font-size': '22px', 'margin-left': '15px'}"
+    >
+      Casts
+    </ion-label>
+    <br />
+
+    <div *ngFor="let cast of movie.actors; let i = index" class="cast-row">
+      <ion-item>
+        <ion-label position="stacked">Actor's Name</ion-label>
+        <ion-input [(ngModel)]="cast.name" name="actorName{{i}}"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Character's Name</ion-label>
+        <ion-input
+          [(ngModel)]="cast.character"
+          name="characterName{{i}}"
+        ></ion-input>
+      </ion-item>
+
+      <ion-button
+        color="danger"
+        fill="solid"
+        shape="round"
+        (click)="removeCast(i)"
+      >
+        <ion-icon slot="icon-only" name="trash"></ion-icon>
+      </ion-button>
+    </div>
+
+    <ion-button color="medium" class="add-cast-btn" (click)="addCast()">
+      <ion-icon slot="start" name="add"></ion-icon>
+      Add Cast
+    </ion-button>
+
+    <ion-button expand="block" color="warning" type="submit" class="save-btn">
+      <ion-icon slot="start" name="save"></ion-icon>
+      Save Movie
+    </ion-button>
+    
+  </form>
+  <ion-alert
+      [isOpen]="showIonAlert"
+      [header]="alertHeader"
+      [message]="alertMessage"
+      [buttons]="['OK']"
+      (didDismiss)="showIonAlert = false">
+    </ion-alert>
+</ion-content>

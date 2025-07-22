@@ -1,0 +1,91 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <!--kembalikan ke manage movie-->
+      <ion-back-button defaultHref="/manage-movie"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Edit Movie</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <!--NOTES KLO PAKE NGMODEL HARUS [(ngModel)] ATAU TWO WAY BINDING SHG VALUE BS BERUBAH SCR DINAMIS-->
+  <ion-list>
+    <ion-item>
+      <!--ngmodel itu jd kek value movie title = apa yg diinput skrg-->
+      <ion-input label="Movie Title" [(ngModel)]="movieTitle" labelPlacement="floating"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input label="Genre" [(ngModel)]="genreMovie" labelPlacement="floating"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input label="Movie Director" [(ngModel)]="movieDirector" labelPlacement="floating"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input label="Release Date" 
+      [(ngModel)]="releaseDate" labelPlacement="floating"
+      [disabled]="true"></ion-input>
+      <ion-button (click)="showCalendar()" color="warning">
+        <ion-icon name={{showBar}}></ion-icon>
+      </ion-button>
+    </ion-item>
+
+    <!--hanya tampilkan jika dia itu showDatenya true-->
+    <ion-item *ngIf="showDate == true">
+      <ion-datetime presentation="date" [(ngModel)]="releaseDate">
+      </ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <ion-input [(ngModel)]="synopsis" label="Synopsis" labelPlacement="floating"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input [(ngModel)]="poster" label="Poster (url)" labelPlacement="floating"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <!--keuntungan ngmodel adlh klo akses ngmodel yg sama dia bakal auto kehubung
+      klo satu keubah, satunya ikut keubah-->
+      <ion-img [src]="poster" alt="{{selectedMovie.title}}" 
+              [ngStyle]="{'width': '300px', 'max-height': '700px', 'object-fit': 'contain', 
+                          'margin-top': '10px', 'display': 'block', 'margin-left': 'auto', 
+                          'margin-right': 'auto'}"></ion-img>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Casts</ion-label>
+      <ion-button slot="end" (click)="addCharacter()">
+        <ion-icon name="add"></ion-icon>
+      </ion-button>
+    </ion-item>
+
+    <!--harusnya itu klo bisa, setiap kali dia klik, buttonnya nambah, jquery bgt anjay-->
+    <ion-list>
+      <ion-item *ngFor="let actor of selectedMovie.actors; let i = index">
+        <!--manfaatkan fitur let i = index krn angular pny fitur otomatis, yaitu
+        deteksi index waktu ngeloopp-->
+        <!--ngmodel actor.name >> name dan character itu nama value objeknya-->
+      <ion-input [(ngModel)]="actor.actor_name" placeholder="Actor Name" label="Actor's Name" 
+                labelPlacement="floating"></ion-input>
+
+      <ion-input [(ngModel)]="actor.character_name" placeholder="Character" label="Character's Name" 
+                  labelPlacement="floating"></ion-input>
+
+      <ion-button color="danger" (click)="removeCharacter(i)">
+        <ion-icon name="trash"></ion-icon>
+      </ion-button>
+    </ion-item>
+    </ion-list>      
+  </ion-list>
+  
+  <ion-item>
+    <ion-button size="big" color = "warning" (click)="editMovie()" [ngStyle]="{'display': 'flex', 'width': '100%', 'margin-top': '20px'}"> <!--jika diklik jalankan editMovie-->
+      <ion-icon slot="start" name="pencil-outline"></ion-icon>
+      Save Changes
+    </ion-button>
+  </ion-item>
+</ion-content>

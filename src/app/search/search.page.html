@@ -1,0 +1,57 @@
+<ion-header [translucent]="true">
+  <ion-toolbar mode ="ml">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="search-title">Search Movie</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class ="ion-padding">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">search</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-searchbar 
+    [(ngModel)]="keyword" 
+    (ionInput)="searchMovie()" 
+    placeholder="Search movie by title, genre, actor or director" 
+    class="custom-searchbar">
+  </ion-searchbar>
+
+  <ion-row *ngIf="filteredMovies.length > 0" class="movie-row">
+    <ion-col *ngFor="let m of filteredMovies" size="12" size-sm="6" size-md="3" class="movie-col">
+      <ion-card class="movie-card">
+        <img [alt]="m.title" [src]="m.poster" class="movie-poster"/>
+        <ion-card-header>
+          <ion-card-title class="movie-title">
+            <span>{{m.title}}</span>
+            <div class="rating-box">
+              <ion-icon name="star"></ion-icon>
+               <span *ngIf="m.rating>0">{{m.rating}}</span>
+                <!--klo dia ratingnya masih 0 berarti not rated-->
+                <span *ngIf="m.rating==0">NaN</span>
+            </div>
+          </ion-card-title>
+
+          <ion-card-subtitle class="movie-genre">{{m.genre}}</ion-card-subtitle>
+          <br>
+
+          <ion-card-subtitle>Release Date : {{m.release_date}}</ion-card-subtitle>
+        </ion-card-header>
+
+        <ion-row class="movie-button-row">
+          <ion-button shape="round" routerLink="/detail-movie/{{m.id}}">
+            <ion-icon slot="icon-only" name="search"></ion-icon>
+          </ion-button>
+        </ion-row>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+  
+  <div *ngIf="filteredMovies.length == 0 && keyword">
+    <p class="no-result">No movies found matching "<b>{{keyword}}</b>"</p>
+  </div>
+</ion-content>

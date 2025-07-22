@@ -1,0 +1,72 @@
+.movie-row {
+  margin-top: 20px;
+  justify-content: center;
+}
+
+.movie-col {
+  display: flex;
+}
+
+.movie-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.movie-poster {
+  height: 500px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.movie-title {
+  font-size: 20px;
+  font-weight: bold;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+}
+
+.rating-box {
+  display: flex;
+  align-items: center;
+}
+
+.rating-box ion-icon {
+  color: gold;
+  margin-right: 5px;
+}
+
+.movie-genre {
+  font-size: 16px;
+  font-weight: bold;
+  color: #C19A6B;
+}
+
+.movie-button-row {
+  justify-content: flex-end;
+  padding: 5px;
+}
+
+.no-result {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.custom-searchbar {
+  --background: #f5f5f5; // warna background dalam search bar
+  --color: #333;         // warna teks
+  --border-radius: 20px; // bikin rounded
+  --box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); // sedikit bayangan biar soft
+  margin: 10px;
+  height: 50px; // <- wajib
+}
+
+.custom-searchbar .searchbar-input-container {
+  border-radius: 20px !important;
+}
+
+.custom-searchbar .searchbar-input {
+  background: #ffffff;
+  border-radius: 20px !important;
+}

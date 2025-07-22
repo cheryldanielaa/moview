@@ -1,0 +1,81 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>Manage Movie</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">manage_movie</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <br>
+
+  <!--atur buat button tambah data-->
+  <div style="display: flex; justify-content: center;">
+    <ion-button routerLink="/add-movie" color="warning"> <!--arahin ke page tambah movie-->
+      <ion-icon name="add"></ion-icon>Insert New Movie</ion-button>
+  </div>
+  <br>
+
+  <!--atur buat ui dari gridnya-->
+  <!--Menampilkan tabel yang dilengkapi dengan tombol utk crud--->
+  <!--ion row let movie of chunkArray movies, 4 artinya adalah 
+  setiap baris terbentuk atas 4 data-->
+  <ion-row *ngFor ="let movie of chunkArray(movies,4);" [ngStyle]="{'justify-content': 'center'}">
+    <!--isikan data kolom untuk setiap barisnya-->
+    <!--atur supaya ukuran semua kolom sama-->
+    <ion-col *ngFor = "let m of movie" size="12" size-sm="6" size-md="3" [ngStyle]="{'display': 'flex'}">
+      <ion-card [ngStyle]="{'display': 'flex', 'flex-direction': 'column', 'height': '100%'}">
+        <img [alt]="m.title" [src]="m.poster" [ngStyle]="{'height':'450px','width':'100%'}"/>
+        <ion-card-header>
+          <ion-card-title [ngStyle]="{'font-size':'20px','font-weight':'bold'}">{{m.title}}</ion-card-title>
+
+          <ion-card-subtitle [ngStyle]="{'font-size':'16px', 'font-weight':'bold', 'color': '#C19A6B'}"><b>{{m.genre}}</b></ion-card-subtitle>
+          <br>
+
+          <ion-card-subtitle [ngStyle]="{'font-size':'14px'}">Director : {{m.director}}</ion-card-subtitle>
+          
+          <ion-card-subtitle>Release Date : {{m.release_date}}</ion-card-subtitle>
+        </ion-card-header>
+
+        <ion-card-content [ngStyle]="{'display': 'flex', 'flex-direction': 'column', 'flex-grow': '1'}">
+          <div>
+            <ion-label [ngStyle]="{'font-size': '18px', 'color': 'orange','font-weight':'bold'}">
+              Synopsis <br>
+            </ion-label>
+
+            <ion-label>
+              {{m.synopsis}}<br><br>
+            </ion-label>
+
+            <ion-label [ngStyle]="{'font-size': '18px', 'color': 'orange','font-weight':'bold'}">
+              Casts <br>
+            </ion-label>
+            <ion-label *ngFor="let act of m.actors">
+              <b [ngStyle]="{'color': '#6082B6'}">{{act.name}}</b> as {{act.character_name}}<br>
+            </ion-label>
+          </div>
+          <br>
+
+          <div [ngStyle]="{ 'display': 'flex', 'justify-content': 'flex-end',  'margin-top': 'auto' }"> <!-- margin top auto biar otomatis ke push ke bawah-->
+            <!--tampung buttonnya disini-->
+            <!--jangan lupa kurung kurawalnya duaa-->
+            <ion-button color="warning" routerLink="/edit-movie/{{m.id}}">
+              <ion-icon name="create"></ion-icon>
+            </ion-button>
+
+            <ion-button color="danger"(click)="deleteMovie(m.id)">
+              <ion-icon name="trash"></ion-icon>
+            </ion-button>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+</ion-content>

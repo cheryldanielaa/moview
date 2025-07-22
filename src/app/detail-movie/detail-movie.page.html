@@ -1,0 +1,146 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <!-- back button buat ke home -->
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Detail Movie</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Detail Movie</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <br>
+  <!-- card buat detail per movie -->
+  <ion-col size="12" [ngStyle]="{'display': 'flex'}">
+    <ion-card [ngStyle]="{'display': 'flex', 'flex-direction': 'row', 'height': '100%', 'width': '100%'}">
+      <div [ngStyle]="{'width': '40%'}">
+        <img [alt]="selectedMovie.title" [src]="selectedMovie.poster"
+          [ngStyle]="{'height':'100%', 'width':'100%', 'object-fit': 'cover'}" />
+      </div>
+
+      <div [ngStyle]="{'width': '60%', 'display': 'flex', 'flex-direction': 'column', 'padding': '20px'}">
+        <ion-card-header>
+          <ion-card-title [ngStyle]="{'font-size':'30px','font-weight':'bold'}">
+            {{selectedMovie.title}}
+          </ion-card-title>
+
+          <ion-card-subtitle [ngStyle]="{'font-size':'16px', 'font-weight':'bold', 'color': '#C19A6B'}">
+            <b>{{selectedMovie.genre}}</b>
+          </ion-card-subtitle>
+          <br>
+
+          <ion-card-subtitle [ngStyle]="{'font-size':'14px'}">
+            <b>Director:</b> {{selectedMovie.director}}
+          </ion-card-subtitle>
+
+          <ion-card-subtitle>
+            <b>Release Date: </b> {{selectedMovie.release_date}}
+          </ion-card-subtitle>
+        </ion-card-header>
+
+        <ion-card-content [ngStyle]="{'display': 'flex', 'flex-direction': 'column', 'flex-grow': '1'}">
+          <div>
+            <ion-label [ngStyle]="{'font-size': '18px', 'color': 'orange','font-weight':'bold'}">
+              Synopsis
+            </ion-label>
+            <br>
+
+            <ion-label> {{selectedMovie.synopsis}}</ion-label>
+            <br><br>
+
+            <ion-label [ngStyle]="{'font-size': '18px', 'color': 'orange','font-weight':'bold'}">
+              Casts
+            </ion-label>
+            <br>
+
+            <div *ngFor="let act of selectedMovie.actors">
+              <ion-label><b [ngStyle]="{'color': '#6082B6'}">
+                  {{act.actor_name}}</b> as {{act.character_name}}<br><br>
+              </ion-label>
+            </div>
+
+            <ion-label [ngStyle]="{'font-size': '18px', 'color': 'orange','font-weight':'bold','display': 
+                                'flex', 'justify-content': 'space-between'}">
+              Ratings
+              <ion-label [ngStyle]="{'font-size': '14px', 'color': 'gray','font-weight':'medium',
+                                'display': 'flex', 'align-items': 'center', 'margin-left': 'auto'}">
+                <ion-icon name="star" [ngStyle]="{'color':'gold', 'margin-right': '5px'}"></ion-icon>
+                {{selectedMovie.rating}}/10 ({{selectedMovie.rating_count}})<br>
+              </ion-label>
+            </ion-label>
+            <ion-card *ngFor="let review of selectedMovie.ratings"
+              [ngStyle]="{'margin-top': '10px', 'position': 'relative'}">
+              <ion-card-header>
+                <div [ngStyle]="{'display': 'flex', 'align-items': 'center', 'padding': '10px'}">
+                  <!--Untuk munculin profile picture-->
+                  <ion-avatar [ngStyle]="{ 'margin-top': '15px' }">
+                    <img [src]="review.profile_pic" [alt]="'No Image'"
+                      [ngStyle]="{'width': '50px', 'height': '50px', 
+                                    'object-fit': 'cover', 'margin-right': '10px'}">
+                  </ion-avatar>
+                  <!-- Detail info user -->
+                  <div [ngStyle]="{'flex': '1'}">
+                    <div [ngStyle]="{'display': 'flex', 'justify-content': 'space-between', 
+                                    'align-items': 'center'}">
+                      <ion-card-subtitle [ngStyle]="{'font-weight': 'bold', 'font-size': '16px'}">
+                        {{ getMaskedUserName(review.name) }}
+                      </ion-card-subtitle>
+
+                      <ion-card-subtitle [ngStyle]="{'font-size': '12px', 'color': 'gray'}">
+                        {{ review.review_date }}
+                      </ion-card-subtitle>
+                    </div>
+
+                    <!-- Jumlah bintang sesuai dengan rating yg dikasih, lakukan looping-->
+                    <div>
+                      <ion-card-subtitle>
+                        <ion-icon *ngFor="let star of getStarArray(review.rating)" name="star"
+                          [ngStyle]="{'color': 'gold', 'margin-right': '2px'}"></ion-icon>
+                        ({{review.rating}}/10)</ion-card-subtitle>
+                    </div>
+                  </div>
+                </div>
+              </ion-card-header>
+
+              <ion-card-content>
+                <p>{{ review.review }}</p>
+              </ion-card-content>
+
+            </ion-card>
+
+            <ion-card [ngStyle]="{'margin-top': '20px', 'padding': '15px'}" *ngIf="isLoggedIn">
+              <ion-card-header>
+                <ion-card-title><strong>Add Your Review</strong></ion-card-title>
+              </ion-card-header>
+
+              <ion-card-content>
+                <ion-item>
+                  <ion-label>Your Rating</ion-label>
+                  <ion-buttons>
+                    <ion-button *ngFor="let r of [1,2,3,4,5,6,7,8,9,10]" (click)="newRating = r">
+                      <ion-icon [name]="r <= newRating ? 'star' : 'star-outline'"></ion-icon>
+                    </ion-button>
+                  </ion-buttons>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label position="floating">Your Review</ion-label>
+                  <ion-textarea [(ngModel)]="newReview"></ion-textarea>
+                </ion-item>
+
+                <div [ngStyle]="{'display': 'flex', 'justify-content': 'center', 'margin-top': '10px'}">
+                  <ion-button expand="block" color="warning" (click)="submitReview()">Submit</ion-button>
+                </div>
+              </ion-card-content>
+            </ion-card>
+          </div>
+        </ion-card-content>
+      </div>
+    </ion-card>
+  </ion-col>
+</ion-content>

@@ -1,0 +1,70 @@
+.add-movie-title {
+    text-align: center;
+    width: 100%;
+    font-weight: bold;
+    font-size: 24px; // kamu bisa sesuaikan misal mau 28px
+}
+
+ion-item {
+    border-radius: 8px;
+    margin-bottom: 12px;
+}
+
+.section-title {
+    margin-top: 20px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.cast-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 10px;
+    align-items: end;
+    margin-bottom: 10px;
+}
+
+.add-cast-btn {
+    border-radius: 20px;
+    margin-top: 10px;
+    width: fit-content;  // <-- agar button tidak melebar
+    margin-left: 15px;
+}
+
+.save-btn {
+    border-radius: 20px;
+    margin-top: 20px;
+    height: 40px;
+}
+
+ion-button {
+    --border-radius: 20px;
+}
+
+.title{
+    font-size: 28px;
+}
+
+.preview-title {
+    font-weight: bold;
+    margin-top: 15px;
+    display: block;
+}
+
+.poster-preview {
+    width: 100%;
+    max-height: 300px;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    margin-top: 10px;
+}
+.error-text {
+    color: red;
+    font-size: 13px;
+    margin: 5px 0 10px 10px;
+}
+.no-border {
+    --border-width: 0;
+    --box-shadow: none;
+  }
